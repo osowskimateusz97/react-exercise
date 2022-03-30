@@ -1,0 +1,25 @@
+:root{
+    --white: white;
+    --yellow:rgb(180, 163, 5);
+    --purple: purple;
+    --green: #1DB954;
+}
+
+html{
+ font-family: 'Poppins', sans-serif;
+ box-sizing:border-box
+}
+*,
+*::before,
+*::after{
+    box-sizing: inherit;
+}
+button{
+ font-family: 'Poppins', sans-serif;
+}
+.wrapper{
+    border:1px solid var(--green);
+    padding:1rem 4rem;
+    max-width:1200px;
+    margin:2rem auto;
+}

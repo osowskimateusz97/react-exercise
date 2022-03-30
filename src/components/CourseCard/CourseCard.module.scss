@@ -1,0 +1,28 @@
+.card{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    padding:2rem;
+    margin-bottom:1rem;
+    border:1px solid var(--green);
+    gap:3rem;
+    h1{
+            background: -webkit-linear-gradient(315deg,#42d392 15%,#647eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip:text;
+            padding-bottom:0.1rem;
+            margin:0;
+    }
+    &__info{
+        display:grid;
+        grid-template-columns: 1fr 2fr;
+        gap:0.5rem;
+        max-width:350px;
+      p{
+          margin:0.5rem 0;
+      }
+    }
+    button{
+        margin-top:1rem;
+    }
+}

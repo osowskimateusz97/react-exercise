@@ -1,0 +1,9 @@
+.search{
+    display:flex;
+    flex-grow:1;
+    &__input{
+        margin-right:1rem;
+        min-width:300px;
+        border:1px solid var(--yellow);
+    }
+}
