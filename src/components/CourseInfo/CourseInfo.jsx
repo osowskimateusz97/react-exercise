@@ -39,12 +39,14 @@ const CourseInfo = ({ courseId }) => {
 						</p>
 					</div>
 					<div>
-						<p>
-							<b>Authors:</b>
+						<div>
+							<p>
+								<b>Authors:</b>
+							</p>
 							{findedAuthors.map((author) => (
-								<p>{author}</p>
+								<p key={author}>{author}</p>
 							))}
-						</p>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -3,7 +3,6 @@ import { bEmail, bName, bPassword, bRegistartion } from '../utils/constants';
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import LoginTemplate from '../template/LoginTemplate/LoginTemplate';
-import { Link } from 'react-router-dom';
 import useForm from '../hook/useForm';
 import { useAuth } from '../hook/useAuth';
 
@@ -15,7 +14,7 @@ const initialValue = {
 
 const RegistrationView = () => {
 	const [inputValues, handleChange] = useForm(initialValue);
-	const { signup, error } = useAuth();
+	const { signup } = useAuth();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -51,12 +50,9 @@ const RegistrationView = () => {
 					placeholderText='Enter password'
 					type='password'
 				/>
-				{error ? <p>{error}</p> : null}
+
 				<Button type='submit' buttonText={bRegistartion} />
 			</form>
-			<p>
-				If you have an account you can <Link to='/login'>Login</Link>
-			</p>
 		</LoginTemplate>
 	);
 };

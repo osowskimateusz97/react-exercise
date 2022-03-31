@@ -10,6 +10,7 @@ export const duration = 'duration';
 export const authorName = 'authorName';
 export const bAuthorName = 'Author Name';
 export const bRegistartion = 'Registration';
+export const bLogin = 'Login';
 export const bName = 'Name';
 export const bEmail = 'Email';
 export const bPassword = 'Password';
