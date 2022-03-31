@@ -1,27 +1,32 @@
-import { useState } from 'react';
-import Header from './components/Header/Header';
-import styles from './App.module.scss';
-import Courses from './components/Courses/Courses';
-import CreateCourse from './components/CreateCourse/CreateCourse';
-import CourseListProvider from './context/CourseListProvider';
+import './App.module.scss';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import CoursesView from './view/CoursesView';
+import RegistrationView from './view/RegistrationView';
+import LoginView from './view/LoginView';
+import { useAuth } from './hook/useAuth';
+import NewCourseView from './view/NewCourseView';
+import CourseInfoView from './view/CourseInfoView';
 
 function App() {
-	const [isCreateCourseOpen, setIsCreateCourseOpen] = useState(false);
-
-	const openCreator = () => setIsCreateCourseOpen(true);
-	const closeCreator = () => setIsCreateCourseOpen(false);
-
+	const auth = useAuth();
 	return (
-		<div className={styles.wrapper}>
-			<Header closeCreator={closeCreator} />
-			<CourseListProvider>
-				{isCreateCourseOpen ? (
-					<CreateCourse closeCreator={closeCreator} />
-				) : (
-					<Courses openCreator={openCreator} />
-				)}
-			</CourseListProvider>
-		</div>
+		<Routes>
+			<Route path='/login' element={<LoginView />} />
+			<Route path='/registration' element={<RegistrationView />} />
+			<Route path='/courses' element={<CoursesView />} />
+			<Route path='/courses/add' element={<NewCourseView />} />
+			<Route path='/courses/:courseId' element={<CourseInfoView />} />
+			<Route
+				path='/'
+				element={
+					auth.user ? (
+						<Navigate to='/courses' />
+					) : (
+						<Navigate to='/registration' />
+					)
+				}
+			></Route>
+		</Routes>
 	);
 }
 

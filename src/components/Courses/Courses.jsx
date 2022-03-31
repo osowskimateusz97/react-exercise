@@ -4,8 +4,9 @@ import styles from './Courses.module.scss';
 import Button from '../Button/Button';
 import SearchBar from '../SearchBar/SearchBar';
 import { CourseListContext } from '../../context/CourseListProvider';
+import { Link } from 'react-router-dom';
 
-const Courses = ({ openCreator }) => {
+const Courses = () => {
 	const { courseList, findAuthorById } = useContext(CourseListContext);
 	const [filteredValue, setFilteredValue] = useState('');
 
@@ -24,7 +25,9 @@ const Courses = ({ openCreator }) => {
 		<div>
 			<div className={styles.searchWrapper}>
 				<SearchBar setFilterValue={setFilterValue} />
-				<Button buttonText='Add new course' onClick={openCreator} />
+				<Link to='/courses/add'>
+					<Button buttonText='Add new course' to='/courses/add' />
+				</Link>
 			</div>
 			{courseList
 				.filter(filterCourses)
@@ -37,6 +40,7 @@ const Courses = ({ openCreator }) => {
 							creationDate={creationDate}
 							duration={duration}
 							authors={findedAuthors}
+							id={id}
 							key={id}
 						/>
 					);

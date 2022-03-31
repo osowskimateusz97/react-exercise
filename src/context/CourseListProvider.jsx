@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { mockedAuthorsList } from '../data/mockedAuthorList';
 import { mockedCoursesList } from '../data/mockedCoursesList';
 import { getCurrentDate } from '../utils/getCurrentDate';
 
-export const CourseListContext = React.createContext({
+export const CourseListContext = createContext({
 	courseList: [],
 	authors: [],
 	addNewCourse: () => {},
 	addNewAuthor: () => {},
+	getCourseById: () => {},
 });
+
+export const useCourseList = () => {
+	return useContext(CourseListContext);
+};
 
 const CourseListProvider = ({ children }) => {
 	const [courseList, setCourseList] = useState(mockedCoursesList);
@@ -37,6 +42,9 @@ const CourseListProvider = ({ children }) => {
 			},
 		]);
 	};
+	const getCourseById = (id) => {
+		return courseList.find((course) => course.id === id);
+	};
 	const findAuthorById = (authorsId) =>
 		authorsId.map((authorId) => authors.find((el) => el.id === authorId).name);
 
@@ -45,6 +53,7 @@ const CourseListProvider = ({ children }) => {
 		authors,
 		addNewAuthor,
 		addNewCourse,
+		getCourseById,
 		findAuthorById,
 	};
 

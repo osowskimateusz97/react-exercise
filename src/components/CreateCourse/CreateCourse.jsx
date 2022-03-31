@@ -23,7 +23,7 @@ import Button from '../Button/Button';
 import Input from '../Input/Input';
 import styles from './CreateCourse.module.scss';
 
-const CreateCourse = ({ closeCreator }) => {
+const CreateCourse = () => {
 	const {
 		authors,
 		removeAuthorToTheCourse,
@@ -34,7 +34,7 @@ const CreateCourse = ({ closeCreator }) => {
 		setNewCourseDetails,
 		newAuthorName,
 		setNewAuthorName,
-	} = useCreateCourse(closeCreator);
+	} = useCreateCourse();
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;

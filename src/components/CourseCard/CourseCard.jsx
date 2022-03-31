@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { convertTime } from '../../utils/convertTime';
 import Button from '../Button/Button';
 import styles from './CourseCard.module.scss';
@@ -9,6 +10,7 @@ const CourseCard = ({
 	creationDate,
 	description,
 	authors,
+	id,
 }) => {
 	return (
 		<div className={styles.card}>
@@ -35,7 +37,9 @@ const CourseCard = ({
 					</p>
 					<p>{creationDate}</p>
 				</div>
-				<Button buttonText='Show course' />
+				<Link to={`/courses/${id}`}>
+					<Button buttonText='Show course' />
+				</Link>
 			</div>
 		</div>
 	);

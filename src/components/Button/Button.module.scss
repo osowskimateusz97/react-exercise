@@ -1,27 +1,26 @@
 .button {
-    --borderClr: var(--green);
-    --bgClr: var(--white);
-    
-    background-color:var(--bgClr);
-    border:1px solid var(--borderClr);
-    padding:0.3rem 1rem;
-    cursor:pointer;
-    transition: all 0.1s;
-    &:hover{
-        color:white;
-        --bgClr: var(--green);
-    }
-   
+  --borderClr: var(--green);
+  --bgClr: var(--white);
+
+  background-color: var(--bgClr);
+  border: 1px solid var(--borderClr);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  &:hover {
+    color: white;
+    --bgClr: var(--green);
+  }
 }
-.purple { 
-    --borderClr: var(--purple);
-    &:hover{
-        --bgClr:var(--purple);
-    }
+.purple {
+  --borderClr: var(--purple);
+  &:hover {
+    --bgClr: var(--purple);
+  }
 }
 .yellow {
-    --borderClr: var(--yellow);
-    &:hover{
-        --bgClr:var(--yellow);
-    }
+  --borderClr: var(--yellow);
+  &:hover {
+    --bgClr: var(--yellow);
+  }
 }

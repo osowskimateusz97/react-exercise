@@ -1,8 +1,6 @@
 import React from 'react';
 import logo from '../assets/logo.svg';
 
-const Logo = ({ closeCreator }) => (
-	<img onClick={closeCreator} src={logo} alt='logo' />
-);
+const Logo = ({ onClick }) => <img onClick={onClick} src={logo} alt='logo' />;
 
 export default Logo;

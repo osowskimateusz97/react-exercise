@@ -1,0 +1,32 @@
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 1rem;
+  font-size: 0.9rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  & > div {
+    width: 40%;
+    max-width: 800px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    button {
+      margin-top: 3rem;
+    }
+  }
+  input {
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  a {
+    color: blue;
+    cursor: pointer;
+  }
+}

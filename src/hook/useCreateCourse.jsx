@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { shema } from '../schema/createCourse';
-import { CourseListContext } from '../context/CourseListProvider';
+import { useCourseList } from '../context/CourseListProvider';
 
 const initialState = {
 	title: '',
@@ -8,10 +8,11 @@ const initialState = {
 	duration: 0,
 	authors: [],
 };
-const useCreateCourse = (closeCreator) => {
+
+const useCreateCourse = () => {
 	const [newCourseDetails, setNewCourseDetails] = useState(initialState);
 	const [newAuthorName, setNewAuthorName] = useState('');
-	const { authors, addNewAuthor, addNewCourse } = useContext(CourseListContext);
+	const { authors, addNewAuthor, addNewCourse } = useCourseList();
 
 	const isAuthorExist = () =>
 		authors.some((author) => author.name === newAuthorName);
@@ -44,7 +45,6 @@ const useCreateCourse = (closeCreator) => {
 		const isValid = await runValidation();
 		if (!isValid) return;
 		addNewCourse(newCourseDetails);
-		closeCreator();
 	};
 
 	const addAuthorToTheCourse = (author) => {
