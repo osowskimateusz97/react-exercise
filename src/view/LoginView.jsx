@@ -1,9 +1,8 @@
 import React from 'react';
-import { bEmail, bPassword } from '../utils/constants';
+import { bEmail, bLogin, bPassword } from '../utils/constants';
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import LoginTemplate from '../template/LoginTemplate/LoginTemplate';
-import { Link } from 'react-router-dom';
 import useForm from '../hook/useForm';
 import { useAuth } from '../hook/useAuth';
 
@@ -14,7 +13,7 @@ const initialValue = {
 
 const LoginView = () => {
 	const [inputValues, handleChange] = useForm(initialValue);
-	const { signin, error } = useAuth();
+	const { signin } = useAuth();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -42,12 +41,8 @@ const LoginView = () => {
 					labelText={bPassword}
 					placeholderText='Enter password'
 				/>
-				{error ? <p>{error}</p> : null}
-				<Button type='submit' buttonText='Login' />
+				<Button type='submit' buttonText={bLogin} />
 			</form>
-			<p>
-				If you not have an account you can <Link to='/'>Registration</Link>
-			</p>
 		</LoginTemplate>
 	);
 };

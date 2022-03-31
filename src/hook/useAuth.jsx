@@ -30,10 +30,16 @@ const useProvideAuth = () => {
 			localStorage.setItem('user', JSON.stringify(user));
 			navigate('/');
 		} catch (err) {
-			console.log(err);
-			setError('You passed wrong login data!');
+			showErrorMsg(err);
 		}
 	};
+
+	const showErrorMsg = (err) => {
+		// it returns array because login/register view map through it to display error msg
+		const errMsg = err.response.data.errors || [err.response.data.result];
+		setError(errMsg);
+	};
+
 	const signup = async (data) => {
 		try {
 			await API.post('/register', data);
@@ -42,8 +48,7 @@ const useProvideAuth = () => {
 			localStorage.setItem('user', JSON.stringify({ name, email }));
 			navigate('/');
 		} catch (err) {
-			console.log(err);
-			setError('You passed wrong registration data!');
+			showErrorMsg(err);
 		}
 	};
 	const signout = () => {

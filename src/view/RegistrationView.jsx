@@ -51,12 +51,9 @@ const RegistrationView = () => {
 					placeholderText='Enter password'
 					type='password'
 				/>
-				{error ? <p>{error}</p> : null}
+
 				<Button type='submit' buttonText={bRegistartion} />
 			</form>
-			<p>
-				If you have an account you can <Link to='/login'>Login</Link>
-			</p>
 		</LoginTemplate>
 	);
 };
