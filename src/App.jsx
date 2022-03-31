@@ -1,11 +1,12 @@
 import './App.module.scss';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import CoursesView from './view/CoursesView';
 import RegistrationView from './view/RegistrationView';
 import LoginView from './view/LoginView';
 import { useAuth } from './hook/useAuth';
+import CoursesView from './view/CoursesView';
 import NewCourseView from './view/NewCourseView';
-import CourseInfoView from './view/CourseInfoView';
+import CourseDetailsView from './view/CourseDetailsView';
+import MainTemplate from './template/MainTemplate/MainTemplate';
 
 function App() {
 	const auth = useAuth();
@@ -13,9 +14,11 @@ function App() {
 		<Routes>
 			<Route path='/login' element={<LoginView />} />
 			<Route path='/registration' element={<RegistrationView />} />
-			<Route path='/courses' element={<CoursesView />} />
-			<Route path='/courses/add' element={<NewCourseView />} />
-			<Route path='/courses/:courseId' element={<CourseInfoView />} />
+			<Route path='/courses' element={<MainTemplate />}>
+				<Route path='' element={<CoursesView />} />
+				<Route path='add' element={<NewCourseView />} />
+				<Route path=':courseId' element={<CourseDetailsView />} />
+			</Route>
 			<Route
 				path='/'
 				element={

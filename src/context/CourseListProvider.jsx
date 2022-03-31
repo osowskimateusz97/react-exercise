@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { mockedAuthorsList } from '../data/mockedAuthorList';
 import { mockedCoursesList } from '../data/mockedCoursesList';
@@ -17,6 +18,7 @@ export const useCourseList = () => {
 };
 
 const CourseListProvider = ({ children }) => {
+	const navigate = useNavigate();
 	const [courseList, setCourseList] = useState(mockedCoursesList);
 	const [authors, setAuthors] = useState(mockedAuthorsList);
 
@@ -41,6 +43,7 @@ const CourseListProvider = ({ children }) => {
 				authors: newCourse.authors.map((author) => author.id),
 			},
 		]);
+		navigate('/courses');
 	};
 	const getCourseById = (id) => {
 		return courseList.find((course) => course.id === id);

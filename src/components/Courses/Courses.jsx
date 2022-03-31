@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import CourseCard from '../CourseCard/CourseCard';
 import styles from './Courses.module.scss';
 import Button from '../Button/Button';
 import SearchBar from '../SearchBar/SearchBar';
-import { CourseListContext } from '../../context/CourseListProvider';
+import { useCourseList } from '../../context/CourseListProvider';
 import { Link } from 'react-router-dom';
 
 const Courses = () => {
-	const { courseList, findAuthorById } = useContext(CourseListContext);
+	const { courseList, findAuthorById } = useCourseList();
 	const [filteredValue, setFilteredValue] = useState('');
 
 	const setFilterValue = (searchValue) => {

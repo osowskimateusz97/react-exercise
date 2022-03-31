@@ -21,9 +21,9 @@ import {
 import { convertTime } from '../../utils/convertTime';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
-import styles from './CreateCourse.module.scss';
+import styles from './CourseCreator.module.scss';
 
-const CreateCourse = () => {
+const CourseCreator = () => {
 	const {
 		authors,
 		removeAuthorToTheCourse,
@@ -140,4 +140,4 @@ const CreateCourse = () => {
 	);
 };
 
-export default CreateCourse;
+export default CourseCreator;

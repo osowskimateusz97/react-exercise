@@ -9,7 +9,7 @@ const Header = () => {
 	const { user, signout } = useAuth();
 	return (
 		<div className={styles.header}>
-			<Link to='/' style={{ height: '100%' }}>
+			<Link to='/courses' style={{ height: '100%' }}>
 				<Logo />
 			</Link>
 			<div className={styles.header__info}>
