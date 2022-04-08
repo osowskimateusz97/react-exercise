@@ -5,8 +5,8 @@ import styles from './Button.module.scss';
 const Button = ({ buttonText, onClick, className, type, variant }) => {
 	const btnStyle = clsx({
 		[styles.button]: true,
-		className,
 		[styles[variant]]: variant,
+		[className]: className,
 	});
 	return (
 		<button type={type || 'button'} className={btnStyle} onClick={onClick}>

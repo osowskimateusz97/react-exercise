@@ -5,9 +5,19 @@ import Button from '../Button/Button';
 import SearchBar from '../SearchBar/SearchBar';
 import { useCourseList } from '../../context/CourseListProvider';
 import { Link } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import ErrorMsg from '../ErrorMsg/ErrorMsg';
+import { connectionErr } from '../../utils/constants';
 
 const Courses = () => {
-	const { courseList, findAuthorById } = useCourseList();
+	const {
+		courses,
+		isCoursesLoading,
+		isAuthorsLoading,
+		isCoursesError,
+		isAuthorsError,
+		findAuthorById,
+	} = useCourseList();
 	const [filteredValue, setFilteredValue] = useState('');
 
 	const setFilterValue = (searchValue) => {
@@ -21,6 +31,7 @@ const Courses = () => {
 		)
 			return true;
 	};
+
 	return (
 		<div>
 			<div className={styles.searchWrapper}>
@@ -29,22 +40,27 @@ const Courses = () => {
 					<Button buttonText='Add new course' to='/courses/add' />
 				</Link>
 			</div>
-			{courseList
-				.filter(filterCourses)
-				.map(({ id, title, description, creationDate, duration, authors }) => {
-					const findedAuthors = findAuthorById(authors);
-					return (
-						<CourseCard
-							title={title}
-							description={description}
-							creationDate={creationDate}
-							duration={duration}
-							authors={findedAuthors}
-							id={id}
-							key={id}
-						/>
-					);
-				})}
+			{isAuthorsLoading || isCoursesLoading ? (
+				<Loader />
+			) : isCoursesError || isAuthorsError ? (
+				<ErrorMsg>{connectionErr}</ErrorMsg>
+			) : (
+				courses
+					.filter(filterCourses)
+					.map(
+						({ id, title, description, creationDate, duration, authors }) => (
+							<CourseCard
+								title={title}
+								description={description}
+								creationDate={creationDate}
+								duration={duration}
+								authors={findAuthorById(authors)}
+								id={id}
+								key={id}
+							/>
+						)
+					)
+			)}
 		</div>
 	);
 };

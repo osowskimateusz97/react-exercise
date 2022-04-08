@@ -11,7 +11,6 @@ const LoginTemplate = ({ children }) => {
 	useEffect(() => {
 		setError(null);
 	}, [setError]);
-
 	const path = pathname === '/registration' ? 'login' : 'registration';
 
 	return (

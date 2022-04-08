@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { convertTime } from '../../utils/convertTime';
 import Button from '../Button/Button';
 import styles from './CourseCard.module.scss';
+import { ReactComponent as EditIcon } from '../../assets/edit.svg';
+import { ReactComponent as TrashIcon } from '../../assets/trash.svg';
+import { removeCourse } from '../../features/coursesSlice';
+import { useDispatch } from 'react-redux';
 
 const CourseCard = ({
 	title,
@@ -12,6 +16,12 @@ const CourseCard = ({
 	authors,
 	id,
 }) => {
+	const dispatch = useDispatch();
+
+	const handleRemoveCourse = () => {
+		dispatch(removeCourse(id));
+	};
+
 	return (
 		<div className={styles.card}>
 			<div className={styles.card__left_side}>
@@ -37,9 +47,17 @@ const CourseCard = ({
 					</p>
 					<p>{creationDate}</p>
 				</div>
-				<Link to={`/courses/${id}`}>
-					<Button buttonText='Show course' />
-				</Link>
+				<div className={styles.editableContainer}>
+					<Link to={`/courses/${id}`}>
+						<Button buttonText='Show course' />
+					</Link>
+					<Button className={styles.icon} buttonText={<EditIcon />} />
+					<Button
+						onClick={handleRemoveCourse}
+						className={styles.icon}
+						buttonText={<TrashIcon />}
+					/>
+				</div>
 			</div>
 		</div>
 	);

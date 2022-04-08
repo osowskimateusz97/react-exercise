@@ -27,3 +27,6 @@ export const number = 'number';
 
 // colors
 export const purple = 'purple';
+
+// errors messages
+export const connectionErr = 'Problem with connection!';
