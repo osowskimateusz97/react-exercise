@@ -23,15 +23,18 @@ const authSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addMatcher(api.endpoints.login.matchFulfilled, (_, { payload }) => {
 			const { email, name } = payload.user;
+			const token = payload.result;
 			localStorage.setItem('user', JSON.stringify({ name, email }));
-			return { name, email };
+			return { name, email, token };
 		});
-		builder.addMatcher(api.endpoints.register.matchFulfilled, (_, { meta }) => {
-			const { name, email } = meta.arg.originalArgs;
-
-			localStorage.setItem('user', JSON.stringify({ name, email }));
-			return { name, email };
-		});
+		builder.addMatcher(
+			api.endpoints.register.matchFulfilled,
+			(_, { payload, meta }) => {
+				const { name, email } = meta.arg.originalArgs;
+				localStorage.setItem('user', JSON.stringify({ name, email }));
+				return { name, email };
+			}
+		);
 	},
 });
 
