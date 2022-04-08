@@ -1,10 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import API from '../api';
 import { useNavigate } from 'react-router-dom';
-import {
-	getUserFromLocalStorage,
-	removeUserFromLocalStorage,
-} from '../utils/localStorage';
+import { connectionErr } from '../utils/constants';
+import { useLoginMutation, useRegisterMutation } from '../services/user';
+import { getUserInfo, signOut } from '../features/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AuthContext = createContext();
 
@@ -18,42 +17,42 @@ export const useAuth = () => {
 };
 
 const useProvideAuth = () => {
-	const [user, setUser] = useState(getUserFromLocalStorage());
+	const user = useSelector(getUserInfo);
+	const dispatch = useDispatch();
+	const [login] = useLoginMutation();
+	const [register] = useRegisterMutation();
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
 	const signin = async (data) => {
 		try {
-			const res = await API.post('/login', data);
-			const { user } = res.data;
-			setUser(user);
-			localStorage.setItem('user', JSON.stringify(user));
+			await login(data).unwrap();
 			navigate('/');
 		} catch (err) {
+			console.error('err', err);
 			showErrorMsg(err);
 		}
 	};
 
 	const showErrorMsg = (err) => {
 		// it returns array because login/register view map through it to display error msg
-		const errMsg = err.response.data.errors || [err.response.data.result];
+		const errMsg = err.data.errors || [
+			err.response.data.result || connectionErr,
+		];
 		setError(errMsg);
 	};
 
 	const signup = async (data) => {
 		try {
-			await API.post('/register', data);
-			const { name, email } = data;
-			setUser({ name, email });
-			localStorage.setItem('user', JSON.stringify({ name, email }));
+			await register(data).unwrap();
 			navigate('/');
 		} catch (err) {
+			console.error('err', err);
 			showErrorMsg(err);
 		}
 	};
 	const signout = () => {
-		setUser(null);
-		removeUserFromLocalStorage();
+		dispatch(signOut());
 		navigate('/login');
 	};
 

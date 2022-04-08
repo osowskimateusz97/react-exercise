@@ -25,4 +25,24 @@
     button{
         margin-top:1rem;
     }
+    .editableContainer{
+        display:flex;
+        align-items:center;
+        gap:0.5rem;
+        margin-top:1rem;
+        a, button{
+            height:100%;
+            margin:0;
+        }
+        
+        svg {
+            transform:scale(0.8);
+        }
+    }
+}
+.icon {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:5px;
 }

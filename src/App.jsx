@@ -22,7 +22,7 @@ function App() {
 			<Route
 				path='/'
 				element={
-					auth.user ? (
+					auth.user.name ? (
 						<Navigate to='/courses' />
 					) : (
 						<Navigate to='/registration' />

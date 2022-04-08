@@ -6,15 +6,17 @@ import styles from './CourseInfo.module.scss';
 
 const CourseInfo = ({ courseId }) => {
 	const [course, setCourse] = useState(null);
-	const { getCourseById, findAuthorById } = useCourseList();
+
+	const { getCourseById, findAuthorById, isAuthorsLoading } = useCourseList();
 
 	useEffect(() => {
 		const course = getCourseById(courseId);
 		setCourse(course);
 	}, [courseId, getCourseById]);
+
 	if (!course) return <Loader />;
 	const { title, description, duration, id, creationDate, authors } = course;
-	const findedAuthors = findAuthorById(authors);
+	const findedAuthors = !isAuthorsLoading && findAuthorById(authors);
 	return (
 		<>
 			<h1>{title}</h1>
@@ -43,9 +45,11 @@ const CourseInfo = ({ courseId }) => {
 							<p>
 								<b>Authors:</b>
 							</p>
-							{findedAuthors.map((author) => (
-								<p key={author}>{author}</p>
-							))}
+							{isAuthorsLoading ? (
+								<p>Loading..</p>
+							) : (
+								findedAuthors.map((author) => <p key={author}>{author}</p>)
+							)}
 						</div>
 					</div>
 				</div>

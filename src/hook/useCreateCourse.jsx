@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { shema } from '../schema/createCourse';
 import { useCourseList } from '../context/CourseListProvider';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addCourse } from '../features/coursesSlice';
+import { v4 as uuidv4 } from 'uuid';
+import { getCurrentDate } from '../utils/getCurrentDate';
+import { addAuthor } from '../features/authorsSlice';
 
 const initialState = {
 	title: '',
@@ -10,16 +16,19 @@ const initialState = {
 };
 
 const useCreateCourse = () => {
+	const dispatch = useDispatch();
 	const [newCourseDetails, setNewCourseDetails] = useState(initialState);
 	const [newAuthorName, setNewAuthorName] = useState('');
-	const { authors, addNewAuthor, addNewCourse } = useCourseList();
+	const navigate = useNavigate();
+	const { authors } = useCourseList();
 
 	const isAuthorExist = () =>
 		authors.some((author) => author.name === newAuthorName);
 
 	const handleAddNewAuthor = () => {
 		if (!newAuthorName.length || isAuthorExist()) return;
-		addNewAuthor(newAuthorName);
+		const payload = { name: newAuthorName, id: uuidv4() };
+		dispatch(addAuthor(payload));
 		setNewAuthorName('');
 	};
 
@@ -42,9 +51,19 @@ const useCreateCourse = () => {
 	};
 
 	const submitNewCourse = async () => {
+		const id = uuidv4();
+		const creationDate = getCurrentDate();
 		const isValid = await runValidation();
 		if (!isValid) return;
-		addNewCourse(newCourseDetails);
+		dispatch(
+			addCourse({
+				id,
+				creationDate,
+				...newCourseDetails,
+				authors: newCourseDetails.authors.map((author) => author.id),
+			})
+		);
+		navigate('/courses');
 	};
 
 	const addAuthorToTheCourse = (author) => {
