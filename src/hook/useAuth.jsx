@@ -1,9 +1,14 @@
 import { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { connectionErr } from '../utils/constants';
-import { useLoginMutation, useRegisterMutation } from '../services/user';
-import { getUserInfo, signOut } from '../features/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { ADMIN_ROLE, connectionErr } from '../utils/constants';
+import {
+	useLoginMutation,
+	useLogoutMutation,
+	useRegisterMutation,
+	useUserInfoMutation,
+} from '../services/user';
+import { getUserInfo } from '../features/authSlice';
+import { useSelector } from 'react-redux';
 
 const AuthContext = createContext();
 
@@ -18,19 +23,22 @@ export const useAuth = () => {
 
 const useProvideAuth = () => {
 	const user = useSelector(getUserInfo);
-	const dispatch = useDispatch();
 	const [login] = useLoginMutation();
+	const [fetchUserInfo] = useUserInfoMutation();
 	const [register] = useRegisterMutation();
+	const [logout] = useLogoutMutation();
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
+	const isAdmin = user.role === ADMIN_ROLE;
 
 	const signin = async (data) => {
 		try {
 			await login(data).unwrap();
+			await fetchUserInfo();
 			navigate('/');
 		} catch (err) {
-			console.error('err', err);
 			showErrorMsg(err);
+			console.error('err', err);
 		}
 	};
 
@@ -45,15 +53,19 @@ const useProvideAuth = () => {
 	const signup = async (data) => {
 		try {
 			await register(data).unwrap();
-			navigate('/');
+			navigate('/login');
 		} catch (err) {
-			console.error('err', err);
 			showErrorMsg(err);
+			console.error('err', err);
 		}
 	};
-	const signout = () => {
-		dispatch(signOut());
-		navigate('/login');
+	const signout = async () => {
+		try {
+			await logout().unwrap();
+			navigate('/login');
+		} catch (err) {
+			console.error('Problem with logout!', err);
+		}
 	};
 
 	return {
@@ -63,5 +75,6 @@ const useProvideAuth = () => {
 		signin,
 		signup,
 		signout,
+		isAdmin,
 	};
 };

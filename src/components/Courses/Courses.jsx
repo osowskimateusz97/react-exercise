@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import { connectionErr } from '../../utils/constants';
+import { useAuth } from '../../hook/useAuth';
 
 const Courses = () => {
 	const {
@@ -18,6 +19,7 @@ const Courses = () => {
 		isAuthorsError,
 		findAuthorById,
 	} = useCourseList();
+	const { isAdmin } = useAuth();
 	const [filteredValue, setFilteredValue] = useState('');
 
 	const setFilterValue = (searchValue) => {
@@ -36,9 +38,11 @@ const Courses = () => {
 		<div>
 			<div className={styles.searchWrapper}>
 				<SearchBar setFilterValue={setFilterValue} />
-				<Link to='/courses/add'>
-					<Button buttonText='Add new course' to='/courses/add' />
-				</Link>
+				{isAdmin ? (
+					<Link to='/courses/add'>
+						<Button buttonText='Add new course' to='/courses/add' />
+					</Link>
+				) : null}
 			</div>
 			{isAuthorsLoading || isCoursesLoading ? (
 				<Loader />

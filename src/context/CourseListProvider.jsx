@@ -1,9 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { getAuthors } from '../features/authorsSlice';
 import { getUserInfo } from '../features/authSlice';
-import { getCourses } from '../features/coursesSlice';
 import { useGetAuthorsQuery } from '../services/authors';
 import { useGetCoursesQuery } from '../services/courses';
 
@@ -11,6 +9,7 @@ export const CourseListContext = createContext({
 	courseList: [],
 	authors: [],
 	getCourseById: () => {},
+	findAuthorById: () => {},
 });
 
 export const useCourseList = () => {
@@ -19,12 +18,16 @@ export const useCourseList = () => {
 
 const CourseListProvider = ({ children }) => {
 	const user = useSelector(getUserInfo);
-	const courses = useSelector(getCourses);
-	const authors = useSelector(getAuthors);
-	const { isLoading: isAuthorsLoading, isError: isAuthorsError } =
-		useGetAuthorsQuery();
-	const { isLoading: isCoursesLoading, isError: isCoursesError } =
-		useGetCoursesQuery();
+	const {
+		data: authors,
+		isLoading: isAuthorsLoading,
+		isError: isAuthorsError,
+	} = useGetAuthorsQuery();
+	const {
+		data: courses,
+		isLoading: isCoursesLoading,
+		isError: isCoursesError,
+	} = useGetCoursesQuery();
 	const getCourseById = (id) => courses.find((course) => course.id === id);
 
 	const findAuthorById = (authorsId) =>
@@ -42,7 +45,7 @@ const CourseListProvider = ({ children }) => {
 	};
 	return (
 		<CourseListContext.Provider value={value}>
-			{user.name ? <>{children}</> : <Navigate to='/registration' />}
+			{user.id ? <>{children}</> : <Navigate to='/login' />}
 		</CourseListContext.Provider>
 	);
 };

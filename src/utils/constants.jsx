@@ -22,11 +22,22 @@ export const bRemoveAuthor = 'Remove author';
 export const bDurationInMinutes = 'Enter duration in minutes';
 export const bEnterDescription = 'Enter description';
 export const bCreateCourse = 'Create course';
+
+export const loading = 'Loading';
+export const updateCourse = 'Update Course';
+
 // types
 export const number = 'number';
 
 // colors
 export const purple = 'purple';
 
-// errors messages
+// MESSAGES
+
+// - errors
 export const connectionErr = 'Problem with connection!';
+// - success
+export const update = 'Success';
+
+// ROLES
+export const ADMIN_ROLE = 'admin';

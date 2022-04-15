@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { shema } from '../schema/createCourse';
 import { useCourseList } from '../context/CourseListProvider';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addCourse } from '../features/coursesSlice';
-import { v4 as uuidv4 } from 'uuid';
-import { getCurrentDate } from '../utils/getCurrentDate';
-import { addAuthor } from '../features/authorsSlice';
+import { filterOutOccupiedAuthors } from '../utils/authors';
+import { useCreateAuthorMutation } from '../services/authors';
 
 const initialState = {
 	title: '',
@@ -15,21 +11,30 @@ const initialState = {
 	authors: [],
 };
 
-const useCreateCourse = () => {
-	const dispatch = useDispatch();
-	const [newCourseDetails, setNewCourseDetails] = useState(initialState);
+const useCreateCourse = (courseDetails) => {
+	const [newCourseDetails, setNewCourseDetails] = useState(
+		courseDetails || initialState
+	);
 	const [newAuthorName, setNewAuthorName] = useState('');
-	const navigate = useNavigate();
-	const { authors } = useCourseList();
-
+	const { authors, isAuthorsLoading } = useCourseList();
+	const [createNewAuthor] = useCreateAuthorMutation();
+	const occupiedAuthors = newCourseDetails.authors.map((occupiedAuthor) =>
+		authors.find((author) => author.id === occupiedAuthor)
+	);
+	const availableAuthors = authors.filter((author) =>
+		filterOutOccupiedAuthors(author, newCourseDetails.authors)
+	);
 	const isAuthorExist = () =>
 		authors.some((author) => author.name === newAuthorName);
 
-	const handleAddNewAuthor = () => {
+	const handleAddNewAuthor = async () => {
 		if (!newAuthorName.length || isAuthorExist()) return;
-		const payload = { name: newAuthorName, id: uuidv4() };
-		dispatch(addAuthor(payload));
-		setNewAuthorName('');
+		try {
+			await createNewAuthor(newAuthorName).unwrap();
+			setNewAuthorName('');
+		} catch (err) {
+			alert('There was problem with adding new author');
+		}
 	};
 
 	const showValidMessage = (err) => {
@@ -40,6 +45,7 @@ const useCreateCourse = () => {
 
 	const runValidation = async () => {
 		try {
+			console.log('in run validation', newCourseDetails);
 			await shema.validate(newCourseDetails, {
 				abortEarly: false,
 			});
@@ -50,26 +56,16 @@ const useCreateCourse = () => {
 		}
 	};
 
-	const submitNewCourse = async () => {
-		const id = uuidv4();
-		const creationDate = getCurrentDate();
+	const save = async (callback) => {
 		const isValid = await runValidation();
 		if (!isValid) return;
-		dispatch(
-			addCourse({
-				id,
-				creationDate,
-				...newCourseDetails,
-				authors: newCourseDetails.authors.map((author) => author.id),
-			})
-		);
-		navigate('/courses');
+		callback(newCourseDetails);
 	};
 
-	const addAuthorToTheCourse = (author) => {
+	const addAuthorToTheCourse = (authorId) => {
 		setNewCourseDetails({
 			...newCourseDetails,
-			authors: [...newCourseDetails.authors, author],
+			authors: [...newCourseDetails.authors, authorId],
 		});
 	};
 
@@ -77,7 +73,7 @@ const useCreateCourse = () => {
 		setNewCourseDetails({
 			...newCourseDetails,
 			authors: newCourseDetails.authors.filter(
-				(author) => author.name !== removingAuthor.name
+				(occupiedAuthorId) => occupiedAuthorId !== removingAuthor.id
 			),
 		});
 	};
@@ -85,13 +81,15 @@ const useCreateCourse = () => {
 	return {
 		removeAuthorToTheCourse,
 		addAuthorToTheCourse,
-		submitNewCourse,
+		isAuthorsLoading,
+		save,
 		handleAddNewAuthor,
 		newCourseDetails,
 		setNewCourseDetails,
 		newAuthorName,
 		setNewAuthorName,
-		authors,
+		availableAuthors,
+		occupiedAuthors,
 	};
 };
 

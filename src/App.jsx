@@ -7,9 +7,11 @@ import CoursesView from './view/CoursesView';
 import NewCourseView from './view/NewCourseView';
 import CourseDetailsView from './view/CourseDetailsView';
 import MainTemplate from './template/MainTemplate/MainTemplate';
+import UpdateCourseView from './view/UpdateCourseView';
 
 function App() {
-	const auth = useAuth();
+	const { user } = useAuth();
+
 	return (
 		<Routes>
 			<Route path='/login' element={<LoginView />} />
@@ -17,16 +19,13 @@ function App() {
 			<Route path='/courses' element={<MainTemplate />}>
 				<Route path='' element={<CoursesView />} />
 				<Route path='add' element={<NewCourseView />} />
+				<Route path='update/:courseId' element={<UpdateCourseView />} />
 				<Route path=':courseId' element={<CourseDetailsView />} />
 			</Route>
 			<Route
 				path='/'
 				element={
-					auth.user.name ? (
-						<Navigate to='/courses' />
-					) : (
-						<Navigate to='/registration' />
-					)
+					user.id ? <Navigate to='/courses' /> : <Navigate to='/registration' />
 				}
 			></Route>
 		</Routes>

@@ -5,26 +5,30 @@ import { convertTime } from '../../utils/convertTime';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Loader from '../Loader/Loader';
-import styles from './CourseCreator.module.scss';
+import styles from './CourseForm.module.scss';
 
-const CourseCreator = () => {
+const CourseForm = ({ courseDetails, saveBtnTitle, handleSave }) => {
 	const {
-		authors,
 		isAuthorsLoading,
-		removeAuthorToTheCourse,
 		addAuthorToTheCourse,
-		submitNewCourse,
+		removeAuthorToTheCourse,
 		handleAddNewAuthor,
 		newCourseDetails,
 		setNewCourseDetails,
 		newAuthorName,
 		setNewAuthorName,
-	} = useCreateCourse();
+		availableAuthors,
+		occupiedAuthors,
+		save,
+	} = useCreateCourse(courseDetails);
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;
-		setNewCourseDetails({ ...newCourseDetails, [name]: value });
+		const parsedValue = name === 'duration' ? parseInt(value) : value;
+		setNewCourseDetails({ ...newCourseDetails, [name]: parsedValue });
 	};
+
+	const handleSaveNewCourse = () => save(handleSave);
 
 	return (
 		<section className={styles.wrapper}>
@@ -37,7 +41,7 @@ const CourseCreator = () => {
 					id={constant.title}
 					labelText={constant.bTitle}
 				/>
-				<Button buttonText={constant.bCreateCourse} onClick={submitNewCourse} />
+				<Button buttonText={saveBtnTitle} onClick={handleSaveNewCourse} />
 			</div>
 			<Input
 				placeholderText={constant.bEnterDescription}
@@ -85,28 +89,21 @@ const CourseCreator = () => {
 						{isAuthorsLoading ? (
 							<Loader />
 						) : (
-							authors
-								.filter(
-									(author) =>
-										!newCourseDetails.authors.find(
-											(occupiedAuthor) => occupiedAuthor.name === author.name
-										)
-								)
-								.map((author) => (
-									<div key={author.id} className={styles.authorElement}>
-										<p>{author.name}</p>
-										<Button
-											buttonText={constant.bAddAuthor}
-											onClick={() => addAuthorToTheCourse(author)}
-										/>
-									</div>
-								))
+							availableAuthors.map((author) => (
+								<div key={author.id} className={styles.authorElement}>
+									<p>{author.name}</p>
+									<Button
+										buttonText={constant.bAddAuthor}
+										onClick={() => addAuthorToTheCourse(author.id)}
+									/>
+								</div>
+							))
 						)}
 					</div>
 					<div>
 						<h1>Course authors</h1>
-						{newCourseDetails.authors.length ? (
-							newCourseDetails.authors.map((author) => (
+						{occupiedAuthors.length ? (
+							occupiedAuthors.map((author) => (
 								<div key={author.id} className={styles.authorElement}>
 									<p>{author.name}</p>
 									<Button
@@ -129,4 +126,4 @@ const CourseCreator = () => {
 	);
 };
 
-export default CourseCreator;
+export default CourseForm;

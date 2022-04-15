@@ -9,7 +9,15 @@ const authors = api.injectEndpoints({
 			transformResponse: (response) => response.result,
 			providesTags: ['Authors'],
 		}),
+		createAuthor: build.mutation({
+			query: (name) => ({
+				url: '/authors/add',
+				method: 'POST',
+				body: { name: name },
+			}),
+			invalidatesTags: ['Authors'],
+		}),
 	}),
 });
 
-export const { useGetAuthorsQuery } = authors;
+export const { useGetAuthorsQuery, useCreateAuthorMutation } = authors;

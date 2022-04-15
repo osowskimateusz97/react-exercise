@@ -9,6 +9,9 @@ const user = api.injectEndpoints({
 				body: { email, password },
 			}),
 		}),
+		userInfo: build.mutation({
+			query: () => '/users/me',
+		}),
 		register: build.mutation({
 			query: ({ name, email, password }) => ({
 				url: '/register',
@@ -16,7 +19,18 @@ const user = api.injectEndpoints({
 				body: { name, email, password },
 			}),
 		}),
+		logout: build.mutation({
+			query: () => ({
+				url: '/logout',
+				method: 'DELETE',
+			}),
+		}),
 	}),
 });
 
-export const { useLoginMutation, useRegisterMutation } = user;
+export const {
+	useLoginMutation,
+	useRegisterMutation,
+	useLogoutMutation,
+	useUserInfoMutation,
+} = user;

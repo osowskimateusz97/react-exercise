@@ -8,37 +8,46 @@ import {
 const initialState = {
 	name: null,
 	email: null,
+	token: null,
+	id: null,
+	role: null,
+};
+
+const saveUserToLocalStorage = (data) => {
+	localStorage.setItem('user', JSON.stringify(data));
 };
 
 const authSlice = createSlice({
 	name: 'auth',
 	initialState: getUserFromLocalStorage() || initialState,
-	reducers: {
-		signOut(state) {
-			state.name = null;
-			state.email = null;
-			removeUserFromLocalStorage();
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
-		builder.addMatcher(api.endpoints.login.matchFulfilled, (_, { payload }) => {
-			const { email, name } = payload.user;
-			const token = payload.result;
-			localStorage.setItem('user', JSON.stringify({ name, email }));
-			return { name, email, token };
+		builder.addMatcher(
+			api.endpoints.login.matchFulfilled,
+			(state, { payload }) => {
+				const token = payload.result;
+				state.token = token;
+			}
+		);
+		builder.addMatcher(api.endpoints.logout.matchFulfilled, () => {
+			removeUserFromLocalStorage();
+			return initialState;
 		});
 		builder.addMatcher(
-			api.endpoints.register.matchFulfilled,
-			(_, { payload, meta }) => {
-				const { name, email } = meta.arg.originalArgs;
-				localStorage.setItem('user', JSON.stringify({ name, email }));
-				return { name, email };
+			api.endpoints.userInfo.matchFulfilled,
+			(state, { payload }) => {
+				const {
+					result: { name, email, role, id },
+				} = payload;
+				state.name = name;
+				state.email = email;
+				state.role = role;
+				state.id = id;
+				saveUserToLocalStorage({ name, email, id, role, token: state.token });
 			}
 		);
 	},
 });
-
-export const { signOut } = authSlice.actions;
 
 export const getUserInfo = (state) => state.auth;
 
