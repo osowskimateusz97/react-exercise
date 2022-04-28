@@ -41,3 +41,9 @@ export const update = 'Success';
 
 // ROLES
 export const ADMIN_ROLE = 'admin';
+
+// FORM
+
+export const NAME_PLACEHOLDER = 'Enter name';
+export const EMAIL_PLACEHOLDER = 'Enter email';
+export const PASSWORD_PLACEHOLDER = 'Enter password';

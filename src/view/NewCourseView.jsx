@@ -5,24 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import * as constant from '../utils/constants';
 
 const NewCourseView = () => {
-	const [createCourse] = useCreateCourseMutation();
-	const navigate = useNavigate();
+  const [createCourse] = useCreateCourseMutation();
+  const navigate = useNavigate();
 
-	const addNewCourse = async (newCourseDetails) => {
-		try {
-			await createCourse(newCourseDetails).unwrap();
-			navigate('/courses');
-		} catch (err) {
-			alert('Problem with adding new course!');
-		}
-	};
+  const addNewCourse = async (newCourseDetails) => {
+    try {
+      await createCourse(newCourseDetails).unwrap();
+      navigate('/courses');
+    } catch (err) {
+      alert('Problem with adding new course!');
+    }
+  };
 
-	return (
-		<CourseForm
-			saveBtnTitle={constant.bCreateCourse}
-			handleSave={addNewCourse}
-		/>
-	);
+  return (
+    <CourseForm
+      saveBtnTitle={constant.bCreateCourse}
+      handleSave={addNewCourse}
+    />
+  );
 };
 
 export default NewCourseView;

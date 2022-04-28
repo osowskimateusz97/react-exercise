@@ -7,29 +7,29 @@ import * as constant from '../utils/constants';
 import { useCourseList } from '../context/CourseListProvider';
 
 const UpdateCourseView = () => {
-	const { getCourseById } = useCourseList();
-	let { courseId } = useParams();
-	const { isAdmin } = useAuth();
+  const { getCourseById } = useCourseList();
+  let { courseId } = useParams();
+  const { isAdmin } = useAuth();
 
-	const courseDetails = getCourseById(courseId);
-	const [updateCourse, { isSuccess }] = useUpdateCourseMutation();
+  const courseDetails = getCourseById(courseId);
+  const [updateCourse, { isSuccess }] = useUpdateCourseMutation();
 
-	const handleUpdateCourse = async (payload) => {
-		try {
-			await updateCourse({ id: courseId, payload }).unwrap();
-		} catch (err) {
-			alert('Problem with updating course!');
-		}
-	};
-	if (!isAdmin) return <Navigate to='/courses' />;
+  const handleUpdateCourse = async (payload) => {
+    try {
+      await updateCourse({ id: courseId, payload }).unwrap();
+    } catch (err) {
+      alert('Problem with updating course!');
+    }
+  };
+  if (!isAdmin) return <Navigate to='/courses' />;
 
-	return (
-		<CourseForm
-			courseDetails={courseDetails}
-			saveBtnTitle={isSuccess ? constant.update : constant.updateCourse}
-			handleSave={handleUpdateCourse}
-		/>
-	);
+  return (
+    <CourseForm
+      courseDetails={courseDetails}
+      saveBtnTitle={isSuccess ? constant.update : constant.updateCourse}
+      handleSave={handleUpdateCourse}
+    />
+  );
 };
 
 export default UpdateCourseView;

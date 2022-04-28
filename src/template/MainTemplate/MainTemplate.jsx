@@ -5,14 +5,14 @@ import Header from '../../components/Header/Header';
 import { Outlet } from 'react-router-dom';
 
 const MainTemplate = () => {
-	return (
-		<CourseListProvider>
-			<div className={styles.wrapper}>
-				<Header />
-				<Outlet />
-			</div>
-		</CourseListProvider>
-	);
+  return (
+    <CourseListProvider>
+      <div className={styles.wrapper}>
+        <Header />
+        <Outlet />
+      </div>
+    </CourseListProvider>
+  );
 };
 
 export default MainTemplate;
