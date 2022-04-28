@@ -36,7 +36,6 @@ const authSlice = createSlice({
         const {
           result: { name, email, role, id },
         } = payload;
-
         state.name = name;
         state.email = email;
         state.role = role;

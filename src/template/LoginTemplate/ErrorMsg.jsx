@@ -1,7 +1,9 @@
 const ErrorMsg = ({ error, className }) => (
   <div className={className}>
     {error.map((msg) => (
-      <p key={msg}>{msg}</p>
+      <p data-testid='errorMsg' key={msg}>
+        {msg}
+      </p>
     ))}
   </div>
 );

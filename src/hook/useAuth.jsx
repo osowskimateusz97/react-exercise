@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROLE, connectionErr } from '../utils/constants';
 import {
@@ -30,15 +30,19 @@ const useProvideAuth = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const isAdmin = user.role === ADMIN_ROLE;
-  console.log('user', user);
+  const cancel = useRef(false);
+  useEffect(() => {
+    return () => (cancel.current = true);
+  }, []);
+
   const signin = async (data) => {
     try {
       await login(data).unwrap();
+      if (cancel.current) return;
       await fetchUserInfo();
       navigate('/');
     } catch (err) {
       showErrorMsg(err);
-      console.error('err', err);
     }
   };
 
@@ -58,6 +62,7 @@ const useProvideAuth = () => {
       showErrorMsg(err);
     }
   };
+
   const signout = async () => {
     try {
       await logout().unwrap();

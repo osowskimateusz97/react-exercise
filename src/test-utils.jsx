@@ -12,7 +12,7 @@ import userEvent from '@testing-library/user-event';
 function render(
   ui,
   {
-    preloadedState,
+    preloadedState = {},
     store = configureStore({
       reducer: { auth: authSlice, [api.reducerPath]: api.reducer },
       preloadedState,

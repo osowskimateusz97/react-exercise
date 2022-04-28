@@ -1,7 +1,6 @@
 const getUser = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  console.log('userroo', user);
-  return user;
+  const user = localStorage.getItem('user');
+  return JSON.parse(user);
 };
 
 export const getUserFromLocalStorage = () => getUser() || null;

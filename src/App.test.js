@@ -5,10 +5,6 @@ import { server } from './mocks/server';
 import { rest } from 'msw';
 import { render, submitForm, typeToTheInput } from './test-utils';
 import * as constants from './utils/constants';
-import {
-  getUserFromLocalStorage,
-  saveUserToLocalStorage,
-} from './utils/localStorage';
 
 const rootAPI = process.env.REACT_APP_BASE_API;
 
@@ -65,47 +61,8 @@ describe('App View', () => {
       })
     );
     submitForm(bRegistartion);
-    await waitFor(() => screen.getByText(errorMsg));
     expect(
       await screen.findByRole('heading', { name: bRegistartion })
     ).toBeInTheDocument();
-  });
-});
-
-var localStorageMock = (function () {
-  var store = {
-    user: {
-      name: 'user',
-      email: 'user@email.com',
-      id: '321321',
-      role: 'USER',
-      token: 'xx12',
-    },
-  };
-  return {
-    getItem: function (key) {
-      return store[key];
-    },
-    setItem: function (key, value) {
-      store[key] = value.toString();
-    },
-    clear: function () {
-      store = {};
-    },
-    removeItem: function (key) {
-      delete store[key];
-    },
-  };
-})();
-
-describe('test local storage in app view', () => {
-  beforeAll(() => {
-    // Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-    global.localStorage = localStorageMock;
-  });
-
-  it('Go to the course view when user exists in local storage', () => {
-    render(<App />);
-    screen.debug();
   });
 });

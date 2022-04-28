@@ -48,7 +48,7 @@ const Courses = () => {
         <Loader />
       ) : isCoursesError || isAuthorsError ? (
         <ErrorMsg>{connectionErr}</ErrorMsg>
-      ) : (
+      ) : courses ? (
         courses
           .filter(filterCourses)
           .map(
@@ -64,7 +64,7 @@ const Courses = () => {
               />
             )
           )
-      )}
+      ) : null}
     </div>
   );
 };

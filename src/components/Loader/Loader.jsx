@@ -3,7 +3,7 @@ import styles from './Loader.module.scss';
 import { ReactComponent as LoaderIcon } from '../../assets/loader.svg';
 
 const Loader = () => (
-  <div className={styles.loader}>
+  <div data-testid='loader' className={styles.loader}>
     <LoaderIcon />
   </div>
 );

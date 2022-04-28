@@ -11,6 +11,7 @@ import UpdateCourseView from './view/UpdateCourseView';
 
 function App() {
   const { user } = useAuth();
+
   return (
     <Routes>
       <Route path='/login' element={<LoginView />} />
