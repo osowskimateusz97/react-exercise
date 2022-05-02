@@ -11,17 +11,8 @@ import {
 } from '../../../data/mockedAuthorList';
 import { mockedCoursesList } from '../../../data/mockedCoursesList';
 
-const handleInputChange = (label, value) => {
-  const input = screen.getByLabelText(label);
-  fireEvent.change(input, {
-    target: {
-      value,
-    },
-  });
-};
 const renderCourseList = (props = {}) => {
   const { courseDetails, handleSave, saveBtnTitle } = props;
-
   cleanup();
   render(
     <CourseListProvider>
@@ -73,8 +64,6 @@ describe('CourseForm', () => {
 
     it('Render authors', () => {
       expect(screen.getByLabelText(constants.bTitle)).toBeInTheDocument();
-      handleInputChange(constants.bTitle, 'Vue 3');
-      handleInputChange(constants.bDescription, 'Vue 3');
       mockedAuthorsList.forEach(({ name }) => {
         expect(screen.getByText(name)).toBeInTheDocument();
       });
@@ -128,8 +117,8 @@ describe('CourseForm', () => {
     });
 
     it('Add author to the course', async () => {
-      const authorName = await addAuthorToTheCourse();
-      expect(screen.getByText(authorName)).toBeInTheDocument();
+      const { name } = await addAuthorToTheCourse();
+      expect(screen.getByText(name)).toBeInTheDocument();
     });
 
     it('Run validation after save empty fields', async () => {
@@ -167,7 +156,7 @@ describe('CourseForm', () => {
           },
         });
       });
-      await addAuthorToTheCourse();
+      const { id } = await addAuthorToTheCourse();
       await screen.findByTestId('occupiedAuthorCard');
       submitCourse(constants.bCreateCourse);
       await waitFor(() => expect(addNewCourse).toHaveBeenCalledTimes(1));
@@ -176,7 +165,7 @@ describe('CourseForm', () => {
         title: 'React',
         description: 'React is the most popular library',
         duration: 120,
-        authors: [mockedAuthorsList[0].id],
+        authors: [id],
       });
     });
   });
@@ -185,12 +174,12 @@ describe('CourseForm', () => {
 const getAuthorsName = (arr) => arr.map((author) => author.name);
 
 const addAuthorToTheCourse = async () => {
-  const authorName = mockedAuthorsList[0].name;
+  const { name, id } = mockedAuthorsList[0];
   const addAuthorBtn = await screen.findByTestId(
-    `availableAuthorCard-${authorName}-btn`
+    `availableAuthorCard-${name}-btn`
   );
   fireEvent.click(addAuthorBtn);
-  return authorName;
+  return { name, id };
 };
 
 const formInfo = [
