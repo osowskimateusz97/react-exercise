@@ -59,4 +59,7 @@ export const handlers = [
       })
     );
   }),
+  rest.delete(`${rootAPI}/logout`, (_, res, ctx) => {
+    return res(ctx.status(200));
+  }),
 ];

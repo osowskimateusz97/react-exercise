@@ -23,12 +23,15 @@ const CourseListProvider = ({ children }) => {
     isLoading: isAuthorsLoading,
     isError: isAuthorsError,
   } = useGetAuthorsQuery();
+
   const {
     data: courses,
     isLoading: isCoursesLoading,
     isError: isCoursesError,
   } = useGetCoursesQuery();
+
   const getCourseById = (id) => courses.find((course) => course.id === id);
+
   const findAuthorById = (authorsId) =>
     authorsId.map((authorId) => authors.find((el) => el.id === authorId).name);
 

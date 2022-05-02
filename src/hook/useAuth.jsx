@@ -31,6 +31,7 @@ const useProvideAuth = () => {
   const navigate = useNavigate();
   const isAdmin = user.role === ADMIN_ROLE;
   const cancel = useRef(false);
+
   useEffect(() => {
     return () => (cancel.current = true);
   }, []);

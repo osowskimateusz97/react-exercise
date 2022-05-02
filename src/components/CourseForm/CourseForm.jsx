@@ -88,23 +88,25 @@ const CourseForm = ({ courseDetails, saveBtnTitle, handleSave }) => {
           <div>
             <h1>Authors</h1>
             {isAuthorsLoading ? (
-              <Loader />
-            ) : (
+              <Loader testId='availableAuthorsLoader' />
+            ) : availableAuthors.length ? (
               availableAuthors.map((author) => (
                 <AuthorInfo
+                  testId='availableAuthorCard'
                   key={author.id}
                   name={author.name}
                   btnText={constant.bAddAuthor}
                   onClick={() => addAuthorToTheCourse(author.id)}
                 />
               ))
-            )}
+            ) : null}
           </div>
           <div>
             <h1>Course authors</h1>
-            {occupiedAuthors.length ? (
+            {occupiedAuthors ? (
               occupiedAuthors.map((author) => (
                 <AuthorInfo
+                  testId='occupiedAuthorCard'
                   key={author.id}
                   name={author.name}
                   btnText={constant.bRemoveAuthor}

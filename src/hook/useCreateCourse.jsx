@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { shema } from '../schema/createCourse';
 import { useCourseList } from '../context/CourseListProvider';
-import { filterOutOccupiedAuthors } from '../utils/authors';
+import { filterOutOccupiedAuthors, getOccupiedAuthors } from '../utils/authors';
 import { useCreateAuthorMutation } from '../services/authors';
 
 const initialState = {
@@ -18,12 +18,13 @@ const useCreateCourse = (courseDetails) => {
   const [newAuthorName, setNewAuthorName] = useState('');
   const { authors, isAuthorsLoading } = useCourseList();
   const [createNewAuthor] = useCreateAuthorMutation();
-  const occupiedAuthors = newCourseDetails.authors.map((occupiedAuthor) =>
-    authors.find((author) => author.id === occupiedAuthor)
-  );
-  const availableAuthors = authors.filter((author) =>
+  const occupiedAuthors =
+    authors && getOccupiedAuthors(authors, newCourseDetails.authors);
+
+  const availableAuthors = authors?.filter((author) =>
     filterOutOccupiedAuthors(author, newCourseDetails.authors)
   );
+
   const isAuthorExist = () =>
     authors.some((author) => author.name === newAuthorName);
 

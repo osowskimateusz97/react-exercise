@@ -26,7 +26,7 @@ const CourseCard = ({
     }
   };
   return (
-    <div className={styles.card}>
+    <div data-testid='courseCard' className={styles.card}>
       <div className={styles.card__left_side}>
         <h1>{title}</h1>
         <p>{description}</p>
